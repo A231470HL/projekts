@@ -1,0 +1,87 @@
+body {
+    font-family: arial;
+    text-align: center; 
+    margin: 0; 
+}
+
+header { 
+    background: #333; 
+    color: white; 
+    padding: 10px;
+    height: 90px; 
+}
+
+h1{
+    display: flex;
+    float: left;
+    padding-left: 50px;
+}
+
+h2{
+    font-size: 40px;
+}
+
+nav a { 
+    color: white; 
+    margin: 0 15px; 
+    text-decoration: none;
+    display: flex; 
+    float: right;
+    padding-top: 36px;
+}
+
+.hero { 
+    background: lightgray; 
+    padding: 50px; 
+    font-size: 24px; 
+}
+
+.cat-fact-section, .game-section { 
+    height: auto;
+    margin: 20px; 
+    padding: 30px; 
+    background: #f4f4f4;
+    font-size: 25px; 
+}
+
+footer { 
+    background: #333; 
+    color: white; 
+    padding: 10px; 
+    margin-top: 20px; 
+}
+
+button { 
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 10px; 
+    width: 10%;
+    height: auto;
+    margin: 30px;
+}
+
+.game-box { 
+    display: grid; 
+    grid-template-columns: repeat(5, 50px); 
+    grid-gap: 5px; 
+    justify-content: center; 
+    margin-top: 20px; 
+}
+
+.game-box div {
+     width: 50px; 
+     height: 50px; 
+     background: gray; 
+     cursor: pointer; 
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projekts</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kaķu Pasaule</h1>
+        <nav>
+            <a onclick="scrollToSection('hero')">Sākums</a>
+            <a onclick="scrollToSection('cat-fact-section')">Fakti par kaķiem</a>
+            <a onclick="scrollToSection('game-section')">Spēle</a>
+            <a onclick="scrollToSection('footer')">Kontakti</a>
+        </nav>
+    </header>
+
+    <section id="hero" class="hero">
+        <h2>Laipni lūdzam kaķu pasaulē!</h2>
+        <p>Uzzini vairāk par kaķiem un viņu unikālajiem paradumiem.</p>
+    </section>
+
+    <section id="cat-fact-section" class="cat-fact-section">
+        <h2>Uzzini jaunu kaķu faktu!</h2>
+        <p id="cat-fact">Spied pogu, lai iegūtu faktu!</p>
+        <button onclick="getCatFact()">Saņemt faktu</button>
+    </section>
+
+    <section id="game-section" class="game-section">
+        <h2>Spēle: Atrodi Kaķus!</h2>
+        <p>Noklikšķini uz pelēkā laukuma, lai atrastu 5 kaķus! Tev ir 15 gājieni.</p>
+        <div class="game-box" id="game-box"></div>
+        <p id="game-result"></p>
+        <button id="restart-game" style="display:none;" onclick="setupGame()">Spēlēt vēlreiz</button>
+    </section>
+
+    <script>
+        function getCatFact() {
+            fetch('https://catfact.ninja/fact')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('cat-fact').innerText = data.fact;
+                })
+                .catch(error => console.error('Kļūda:', error));
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function setupGame() {
+            const gameBox = document.getElementById('game-box');
+            const restartButton = document.getElementById('restart-game');
+            gameBox.innerHTML = '';
+            restartButton.style.display = 'none';
+            let gridSize = 25;
+            let catPositions = new Set();
+            while (catPositions.size < 5) {
+                catPositions.add(Math.floor(Math.random() * gridSize));
+            }
+            let movesLeft = 15;
+            let catsFound = 0;
+            let resultText = document.getElementById('game-result');
+            resultText.innerText = `Atlikušie gājieni: ${movesLeft}`;
+            let squares = [];
+
+            for (let i = 0; i < gridSize; i++) {
+                let div = document.createElement('div');
+                squares.push(div);
+                div.onclick = function() {
+                    if (movesLeft > 0) {
+                        if (catPositions.has(i)) {
+                            div.style.background = 'green';
+                            catsFound++;
+                        } else {
+                            div.style.background = 'red';
+                        }
+                        movesLeft--;
+                        if (catsFound === 5) {
+                            resultText.innerText = 'Tu atradi visus kaķus!';
+                            resultText.classList.add('win-animation');
+                            restartButton.style.display = 'block';
+                        } else if (movesLeft === 0) {
+                            resultText.innerText = 'Spēle beigusies!';
+                            resultText.classList.add('lose-animation');
+                            revealCats();
+                            restartButton.style.display = 'block';
+                        } else {
+                            resultText.innerText = `Atlikušie gājieni: ${movesLeft}`;
+                        }
+                        div.onclick = null;
+                    }
+                };
+                gameBox.appendChild(div);
+            }
+
+            function revealCats() {
+                catPositions.forEach(pos => {
+                    squares[pos].style.background = 'green';
+                });
+            }
+        }
+        
+        window.onload = setupGame;
+    </script>
+      <footer id="footer">
+        <p>&copy; 2025 Kaķu Pasaule. Visas tiesības aizsargātas.</p>
+    </footer>
+</body>
+</html>
